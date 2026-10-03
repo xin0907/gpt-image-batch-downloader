@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "图片批量下载助手",
+  "name": "__MSG_extName__",
   "version": "0.8.1",
-  "description": "读取当前 ChatGPT 图片组，在本机预览并保存所选图片；不上传开发者服务器。",
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
@@ -20,7 +21,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "图片批量下载助手",
+    "default_title": "__MSG_actionTitle__",
     "default_icon": {
       "16": "icons/icon-16.png",
       "32": "icons/icon-32.png"

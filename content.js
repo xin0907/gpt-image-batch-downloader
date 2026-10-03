@@ -6,6 +6,16 @@
   const ImageIO = globalThis.BatchImageIO;
   if (!Gallery || !ImageIO) return;
 
+  // Without a saved choice, follow the browser: Chinese for zh-*, English otherwise.
+  const defaultLanguage = (() => {
+    try {
+      const browser = chrome.i18n?.getUILanguage?.() || "";
+      return browser && !/^zh/i.test(browser) ? "en" : "zh";
+    } catch {
+      return "zh";
+    }
+  })();
+
   const state = {
     gallery: null,
     galleryUrl: "",
@@ -20,7 +30,7 @@
     contextStale: false,
     partialList: false,
     partialConfirmed: false,
-    language: "zh",
+    language: defaultLanguage,
     scanIssue: null,
     saveNotice: null,
     thumbnailSources: new Set(),

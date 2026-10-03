@@ -125,7 +125,7 @@ function fixture({
   themeDark = false, darkBackgroundOnly = false,
   viewerZoom = true, scanIncomplete = false, cancelPickerOnce = false,
   changeGalleryDuringPicker = false, viewerOverlay = false,
-  galleryInitiallyMissing = false, storageState = {}
+  galleryInitiallyMissing = false, storageState = {}, uiLanguage
 } = {}) {
   const files = new Map();
   const directory = {
@@ -247,6 +247,7 @@ function fixture({
     }
   };
   const chrome = {
+    i18n: uiLanguage ? { getUILanguage: () => uiLanguage } : undefined,
     storage: {
       local: {
         async get() { return { language: storageState.language }; },
@@ -637,4 +638,16 @@ test("changing image groups while choosing a folder prevents saving the old grou
   assert.equal(page.files.size, 0);
   assert.equal(page.ui("save").disabled, true);
   assert.equal(page.getPickerCalls(), 1);
+});
+
+test("panel follows the browser language when no language was saved", async () => {
+  const english = fixture({ uiLanguage: "en-GB" });
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(english.trigger().getAttribute("aria-label"), "Download image group");
+  const chinese = fixture({ uiLanguage: "zh-CN" });
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(chinese.trigger().getAttribute("aria-label"), "批量下载图片");
+  const saved = fixture({ uiLanguage: "en-US", storageState: { language: "zh" } });
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(saved.trigger().getAttribute("aria-label"), "批量下载图片");
 });

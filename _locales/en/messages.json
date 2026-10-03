@@ -1,0 +1,11 @@
+{
+  "extName": {
+    "message": "Image Batch Download Helper"
+  },
+  "extDescription": {
+    "message": "Preview and batch save the current ChatGPT image group to a local folder. Nothing is uploaded to the developer."
+  },
+  "actionTitle": {
+    "message": "Image Batch Download Helper"
+  }
+}

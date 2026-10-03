@@ -15,7 +15,16 @@
   };
 
   const byId = (id) => document.getElementById(id);
-  let language = "zh";
+  // Without a saved choice, follow the browser: Chinese for zh-*, English otherwise.
+  const defaultLanguage = (() => {
+    try {
+      const browser = chrome.i18n?.getUILanguage?.() || "";
+      return browser && !/^zh/i.test(browser) ? "en" : "zh";
+    } catch {
+      return "zh";
+    }
+  })();
+  let language = defaultLanguage;
   let languageChosen = false;
   let storageError = false;
 

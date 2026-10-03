@@ -25,6 +25,8 @@ FILES = (
     "icons/icon-128.png",
     "LICENSE",
     "PRIVACY.md",
+    "_locales/en/messages.json",
+    "_locales/zh_CN/messages.json",
 )
 
 
