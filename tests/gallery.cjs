@@ -8,13 +8,20 @@ function galleryFixture(mode, {
   initialOutside = false, previewOnly = false,
   virtualized = false, lazy = false, explicitFull = false,
   fallbackFull = false, coveredHero = false, count = 3,
-  tailPadding = 0, headPadding = 0
+  tailPadding = 0, headPadding = 0, narrowHero = false
 } = {}) {
   const urls = Array.from({ length: count }, (_, index) =>
     "https://chatgpt.com/image/" + (index + 1) + ".png");
   const heroBox = mode === "generation"
     ? { left: 603, right: 1003, top: 90, bottom: 800, width: 400, height: 710 }
     : { left: 788, right: 1188, top: 53, bottom: 763, width: 400, height: 710 };
+  // A portrait image on a zoomed page (e.g. 150%) is narrower than 240 CSS px.
+  // It stays next to its rail: right of the image on the generation page,
+  // left of it in the viewer.
+  if (narrowHero) {
+    const edge = mode === "generation" ? { left: heroBox.right - 204 } : { right: heroBox.left + 204 };
+    Object.assign(heroBox, edge, { width: 204, bottom: heroBox.top + 362, height: 362 });
+  }
   const railBox = mode === "generation"
     ? { left: 1015, right: 1090, top: 90, bottom: 390, width: 75, height: 300 }
     : { left: 58, right: 143, top: 53, bottom: 353, width: 85, height: 300 };
@@ -174,6 +181,16 @@ for (const mode of ["generation", "viewer"]) {
     assert.equal(getScrollTop(), 0);
     assert.equal(getHeroSource(), originalHero);
     assert.equal(getStrayClicks(), 0);
+  });
+}
+
+for (const mode of ["generation", "viewer"]) {
+  test("finds a narrow portrait " + mode + " image on a zoomed page", async () => {
+    const { gallery, urls } = galleryFixture(mode, { narrowHero: true });
+    const scope = gallery.discover();
+    assert.equal(scope?.mode, mode);
+    const result = await gallery.scan(scope);
+    assert.deepEqual(Array.from(result.items, (item) => item.source), urls);
   });
 }
 

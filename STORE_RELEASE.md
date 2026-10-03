@@ -6,7 +6,7 @@
 
 1. 如需重新生成图标及宣传图，先安装 Pillow，再运行 `python scripts/generate_artwork.py`。仓库中已经包含生成好的 PNG，普通打包无需安装 Pillow。
 2. 运行 `node --test tests/*.cjs`，再运行 `python scripts/package.py`。
-3. 上传 `release/image-batch-download-0.8.1.zip`。压缩包根目录已有 `manifest.json`；不要再把整个项目文件夹压缩一次。
+3. 上传 `release/image-batch-download-<版本号>.zip`。压缩包根目录已有 `manifest.json`；不要再把整个项目文件夹压缩一次。
 
 商店素材：`icons/icon-128.png` 为 128×128 PNG 图标；`store-assets/promo-440x280.png` 为 440×280 小宣传图。还需要在扩展实际运行的 ChatGPT 页面拍摄至少一张真实截图，尺寸为 1280×800 或 640×400。建议展示选图面板，以及全屏查看器内的按钮。截图应去掉不愿公开的对话或账号信息；不要把模拟页面截图当成真实功能截图。
 

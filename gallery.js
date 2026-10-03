@@ -21,7 +21,10 @@
   function imageIsHero(image) {
     if (image.closest?.("#bgi-extension-root")) return false;
     const rect = image.getBoundingClientRect();
-    return rect.width >= 240 && rect.height >= 240 && visible(rect) && usableSource(sourceOf(image));
+    // Portrait images on a zoomed page or a small screen can be narrower than
+    // 240 CSS px. Thumbnails never exceed 165 px on either side.
+    return Math.max(rect.width, rect.height) >= 240 && Math.min(rect.width, rect.height) >= 120 &&
+      visible(rect) && usableSource(sourceOf(image));
   }
 
   function findHero(root = document) {
