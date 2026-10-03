@@ -1,4 +1,4 @@
-# Image Batch Download Helper
+# Image Batch Downloader for ChatGPT
 
 [简体中文](README.md) | **English**
 

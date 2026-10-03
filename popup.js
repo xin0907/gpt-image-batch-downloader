@@ -1,13 +1,13 @@
 (() => {
   const messages = {
     zh: {
-      name: "图片批量下载",
+      name: "图片批量下载助手 for ChatGPT",
       language: "语言",
       github: "在 GitHub 查看源代码",
       storage: "语言偏好未保存，请重试。"
     },
     en: {
-      name: "Batch download images",
+      name: "Image Batch Downloader for ChatGPT",
       language: "Language",
       github: "View source on GitHub",
       storage: "Language preference was not saved. Try again."

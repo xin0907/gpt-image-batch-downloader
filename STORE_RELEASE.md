@@ -1,6 +1,6 @@
 # Chrome Web Store 发布准备
 
-本扩展由个人独立开发，并非 OpenAI 官方产品。商店展示名称使用“图片批量下载助手”；“ChatGPT”仅用于说明兼容的网站。
+本扩展由个人独立开发，并非 OpenAI 官方产品。商店展示名称使用“图片批量下载助手 for ChatGPT”/“Image Batch Downloader for ChatGPT”。按 OpenAI 品牌规则和商店防冒充政策，“ChatGPT”只以“for ChatGPT”的形式说明兼容的网站，不作为产品名本身，也不要改成“ChatGPT 下载器”“XxxGPT”这类名称。
 
 ## 可上传的文件
 
@@ -14,7 +14,7 @@
 
 名称和简短说明来自 `_locales/`：默认语言为英文（`en`），简体中文浏览器显示 `zh_CN`。商店后台的详细说明和截图需要按语言分别填写：先填英文（默认语言），再添加简体中文。
 
-**名称**：图片批量下载助手 / Image Batch Download Helper
+**名称**：图片批量下载助手 for ChatGPT / Image Batch Downloader for ChatGPT
 
 **简短说明**：读取当前 ChatGPT 图片组，在本机预览并保存所选图片；不上传开发者服务器。 / Preview and batch save the current ChatGPT image group to a local folder. Nothing is uploaded to the developer.
 

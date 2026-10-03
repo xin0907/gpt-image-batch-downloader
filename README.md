@@ -1,4 +1,4 @@
-# 图片批量下载助手
+# 图片批量下载助手 for ChatGPT
 
 **简体中文** | [English](README.en.md)
 

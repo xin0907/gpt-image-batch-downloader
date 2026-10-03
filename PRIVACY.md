@@ -4,7 +4,7 @@
 
 ## 中文
 
-“图片批量下载助手”是一款独立开发的浏览器扩展，适用于 ChatGPT 图片页面，与 OpenAI 无关联或官方认可。
+“图片批量下载助手 for ChatGPT”是一款独立开发的浏览器扩展，适用于 ChatGPT 图片页面，与 OpenAI 无关联或官方认可。
 
 - 扩展的页面脚本仅在 `chatgpt.com` 和 `chat.openai.com` 运行，读取当前图片组的图片元素、图片地址及网页显示的图片组信息，以展示预览、选择列表和下载进度。它不会读取完整对话文本用于分析或上传。
 - 用户点击下载后，扩展从 ChatGPT 及其图片资源域名请求所选图片，并将收到的文件字节写入用户选择的本地目录。按浏览器的正常请求规则，访问需要登录的图片时，请求可能携带该网站的登录状态。扩展不会把图片或对话内容发送给开发者的服务器。
@@ -17,7 +17,7 @@
 
 ## English
 
-“Image Batch Download Helper” is an independent browser extension for ChatGPT image pages. It is not affiliated with or endorsed by OpenAI.
+“Image Batch Downloader for ChatGPT” is an independent browser extension for ChatGPT image pages. It is not affiliated with or endorsed by OpenAI.
 
 - The extension's page script runs only on `chatgpt.com` and `chat.openai.com`. It reads image elements, image URLs, and image-group information shown on the current page to display previews, a selection list, and download progress. It does not analyze or upload the full conversation text.
 - After the user clicks Download, the extension requests selected images from ChatGPT and its image-resource domains and writes the received bytes to the local folder selected by the user. Under normal browser request rules, authenticated image requests may carry the user's login state for that website. The extension does not send images or conversation content to a developer-operated server.

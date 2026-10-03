@@ -1,11 +1,11 @@
 {
   "extName": {
-    "message": "图片批量下载助手"
+    "message": "图片批量下载助手 for ChatGPT"
   },
   "extDescription": {
     "message": "读取当前 ChatGPT 图片组，在本机预览并保存所选图片；不上传开发者服务器。"
   },
   "actionTitle": {
-    "message": "图片批量下载助手"
+    "message": "图片批量下载助手 for ChatGPT"
   }
 }

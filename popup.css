@@ -21,7 +21,7 @@
 
 * { box-sizing: border-box; }
 body {
-  width: 320px;
+  width: 340px;
   max-height: 600px;
   overflow-y: auto;
   margin: 0;
