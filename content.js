@@ -28,8 +28,6 @@
     scanning: false,
     busy: false,
     contextStale: false,
-    partialList: false,
-    partialConfirmed: false,
     language: defaultLanguage,
     scanIssue: null,
     saveNotice: null,
@@ -53,8 +51,6 @@
       previewPosition: (number, total) => `第 ${number} / ${total} 张`,
       clickPreview: "点击预览", unknownDimensions: "尺寸待检测",
       missingGroup: "未找到当前图片组。请打开生成图片或全屏查看器后重试。",
-      partialIssue: (count) => `已读取 ${count} 张，但无法确认网页是否还有未加载的图片。请核对列表。`,
-      partialConfirm: (count) => `已核对这 ${count} 张`,
       unresolved: (count) => `有 ${count} 张无法确认大图地址，请稍后重试。`,
       incomplete: "网页尚未加载完整图片组，请稍后重试。",
       noDirectoryPicker: "当前浏览器不支持选择目录",
@@ -89,8 +85,6 @@
       previewPosition: (number, total) => `Image ${number} / ${total}`,
       clickPreview: "Click to preview", unknownDimensions: "Dimensions unavailable",
       missingGroup: "No image group found. Open a generated image or the full-screen viewer and try again.",
-      partialIssue: (count) => `${count} images found, but the page may still be loading more. Check the list.`,
-      partialConfirm: (count) => `I've checked these ${count} images`,
       unresolved: (count) => `Full-size image URLs are unavailable for ${count} images. Try again later.`,
       incomplete: "The full image group has not loaded. Try again later.",
       noDirectoryPicker: "This browser cannot choose a folder",
@@ -156,7 +150,6 @@
     '      </div>',
     '      <div id="scanIssue" class="scan-issue" role="status" hidden>',
     '        <span id="scanIssueText"></span>',
-    '        <label id="partialConfirmLabel" class="partial-confirm" hidden><input id="partialConfirm" type="checkbox"><span id="partialConfirmText"></span></label>',
     '        <button id="retry" type="button">重试</button>',
     '      </div>',
     '      <div id="selectToolbar" class="toolbar">',
@@ -238,8 +231,6 @@
                              ["previewPrev", "previous"], ["previewNext", "next"]]) {
       ui(id).setAttribute("aria-label", t(key));
     }
-    ui("partialConfirmText").textContent = state.partialList
-      ? t("partialConfirm", state.items.length) : "";
     paintMessages();
     renderItems();
     if (state.previewIndex >= 0) updatePreview();
@@ -293,7 +284,6 @@
   function canSave() {
     return !state.busy && !state.scanning && Boolean(state.directory || window.showDirectoryPicker) &&
       selectedPending().length > 0 &&
-      (!state.partialList || state.partialConfirmed) &&
       !state.contextStale && Boolean(state.gallery?.rail?.isConnected) &&
       state.galleryUrl === pageKey();
   }
@@ -318,17 +308,12 @@
     state.scanIssue = { key, args };
     paintMessages();
     ui("scanIssue").hidden = false;
-    ui("partialConfirmLabel").hidden = true;
-    ui("partialConfirm").checked = false;
-    state.partialConfirmed = false;
   }
 
   function clearScanIssue() {
     state.scanIssue = null;
     ui("scanIssue").hidden = true;
     ui("scanIssueText").textContent = "";
-    ui("partialConfirmLabel").hidden = true;
-    ui("partialConfirm").checked = false;
   }
 
   function setSaveStatus(key, ...args) {
@@ -455,8 +440,6 @@
     state.gallery = gallery;
     state.galleryUrl = pageKey();
     state.contextStale = false;
-    state.partialList = false;
-    state.partialConfirmed = false;
     state.thumbnailSources.clear();
     state.items = [];
     state.selected.clear();
@@ -470,21 +453,14 @@
       if (epoch !== state.epoch) return;
       if (!gallery.rail.isConnected || state.galleryUrl !== pageKey() ||
           discoverCurrentGallery()?.rail !== gallery.rail) throw new Error("图片组已变化，请重试");
-      if (!result.complete) {
-        if (!result.railComplete && !result.unresolved && result.items.length) {
-          state.items = result.items;
-          state.selected = new Set(result.items.map((item) => item.id));
-          state.thumbnailSources = new Set(result.thumbnailSources);
-          state.partialList = true;
-          showScanIssue("partialIssue", result.items.length);
-          ui("partialConfirmText").textContent = t("partialConfirm", result.items.length);
-          ui("partialConfirmLabel").hidden = false;
-        } else {
-          state.contextStale = true;
-          setSaveStatus("");
-          if (result.unresolved) showScanIssue("unresolved", result.unresolved);
-          else showScanIssue("incomplete");
-        }
+      // A scrollable rail can leave trailing space that looks like unloaded
+      // thumbnails. Every image found here has a confirmed full-size source,
+      // so list them without an extra warning.
+      if (result.unresolved || !result.items.length) {
+        state.contextStale = true;
+        setSaveStatus("");
+        if (result.unresolved) showScanIssue("unresolved", result.unresolved);
+        else showScanIssue("incomplete");
         return;
       }
       state.items = result.items;
@@ -778,10 +754,6 @@
     if (event.target === ui("backdrop")) setOpen(false);
   });
   ui("retry").addEventListener("click", scanCurrent);
-  ui("partialConfirm").addEventListener("change", () => {
-    state.partialConfirmed = ui("partialConfirm").checked;
-    updateControls();
-  });
   ui("selectAll").addEventListener("click", () => {
     state.selected = new Set(state.items.map((item) => item.id));
     renderItems();

@@ -104,7 +104,7 @@ class Shadow {
     for (const [, id] of html.matchAll(/id="([^"]+)"/g)) {
       this.nodes.set(id, new Element());
     }
-    for (const id of ["backdrop", "scanIssue", "partialConfirmLabel", "preview"]) {
+    for (const id of ["backdrop", "scanIssue", "preview"]) {
       if (this.nodes.has(id)) this.nodes.get(id).hidden = true;
     }
   }
@@ -326,7 +326,6 @@ function fixture({
       for (const listener of documentListeners.get("keydown") || []) listener(event);
       return event;
     },
-    makeScanComplete() { scanComplete = true; },
     revealGallery() {
       galleryReady = true;
       for (const listener of documentListeners.get("load") || []) {
@@ -367,18 +366,14 @@ test("generation icon joins the message action row and viewer icon joins the top
   await eventually(() => viewer.ui("imageList").children.length === 3);
 });
 
-test("an uncertain rail lists found images but needs explicit confirmation", async () => {
+test("an uncertain rail lists found images without a warning and saves directly", async () => {
   const page = fixture({ scanIncomplete: true });
   page.trigger().click();
-  await eventually(() => !page.ui("scanIssue").hidden);
-  assert.match(page.ui("scanIssueText").textContent, /无法确认网页是否还有未加载的图片/);
-  assert.equal(page.ui("imageList").children.length, 3);
-  assert.equal(page.ui("selectToolbar").hidden, false);
+  await eventually(() => page.ui("imageList").children.length === 3);
+  assert.equal(page.ui("scanIssue").hidden, true);
+  assert.equal(page.ui("scanIssueText").textContent, "");
+  assert.doesNotMatch(page.panelHost.shadowRoot.html, /partialConfirm/);
   assert.equal(page.ui("saveFooter").hidden, false);
-  assert.equal(page.ui("partialConfirmLabel").hidden, false);
-  assert.equal(page.ui("save").disabled, true);
-  page.ui("partialConfirm").checked = true;
-  page.ui("partialConfirm").dispatch("change");
   assert.equal(page.ui("save").disabled, false);
   page.ui("save").click();
   await eventually(() => page.files.size === 3);
@@ -404,22 +399,18 @@ test("wheel input over the image list scrolls it without reaching the page", asy
   assert.equal(zoom.defaultPrevented, false);
 });
 
-test("toolbar language preference translates the panel and preserves selection, scroll and confirmation", async () => {
+test("toolbar language preference translates the panel and preserves selection and scroll", async () => {
   const storageState = {};
   const page = fixture({ scanIncomplete: true, storageState });
   page.trigger().click();
   await eventually(() => page.ui("imageList").children.length === 3);
   page.ui("imageList").children[0].children[0].click();
   page.ui("imageList").scrollTop = 37;
-  page.ui("partialConfirm").checked = true;
-  page.ui("partialConfirm").dispatch("change");
   assert.equal(page.ui("save").disabled, false);
 
   page.setStoredLanguage("en");
   assert.equal(storageState.language, "en");
   assert.equal(page.ui("counts").textContent, "3 found · 2 selected");
-  assert.match(page.ui("scanIssueText").textContent, /page may still be loading more/);
-  assert.equal(page.ui("partialConfirmText").textContent, "I've checked these 3 images");
   assert.equal(page.ui("selectAll").textContent, "Select all");
   assert.equal(page.ui("save").textContent, "Download selected (2)");
   assert.equal(page.ui("imageList").scrollTop, 37);
@@ -457,21 +448,6 @@ test("toolbar language preference retranslates completed and failed download res
   assert.equal(page.files.size, 3);
   page.setStoredLanguage("zh");
   assert.match(page.ui("saveStatus").textContent, /^本次完成：1\/1 张成功/);
-});
-
-test("retry clears the uncertain-list confirmation after a complete scan", async () => {
-  const page = fixture({ scanIncomplete: true });
-  page.trigger().click();
-  await eventually(() => !page.ui("partialConfirmLabel").hidden);
-  page.makeScanComplete();
-  page.ui("retry").click();
-  await eventually(() => page.ui("scanIssue").hidden &&
-    page.ui("imageList").children.length === 3);
-  assert.equal(page.ui("imageList").children.length, 3);
-  assert.equal(page.ui("scanIssue").hidden, true);
-  assert.equal(page.ui("partialConfirmLabel").hidden, true);
-  assert.equal(page.ui("saveFooter").hidden, false);
-  assert.equal(page.ui("save").disabled, false);
 });
 
 test("viewer icon uses the first toolbar control when zoom is absent", () => {
