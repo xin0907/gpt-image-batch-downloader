@@ -15,8 +15,7 @@ STORE = ROOT / "store-assets"
 
 def icon(size: int) -> Image.Image:
     scale = 8
-    image = Image.new("RGBA", (128 * scale, 128 * scale), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(image)
+    full = 128 * scale
 
     def box(coords):
         return tuple(round(value * scale) for value in coords)
@@ -24,21 +23,40 @@ def icon(size: int) -> Image.Image:
     def points(coords):
         return [(round(x * scale), round(y * scale)) for x, y in coords]
 
-    draw.rounded_rectangle(box((16, 16, 112, 112)), radius=23 * scale, fill="#202123")
-    draw.rounded_rectangle(
-        box((42, 35, 87, 79)), radius=6 * scale,
-        outline="#FFFFFF", width=4 * scale,
-    )
-    draw.rounded_rectangle(
-        box((29, 47, 76, 93)), radius=6 * scale,
-        fill="#202123", outline="#FFFFFF", width=4 * scale,
-    )
-    draw.ellipse(box((39, 57, 47, 65)), fill="#FFFFFF")
-    draw.line(points(((35, 82), (46, 71), (53, 78), (61, 70), (70, 80))),
-              fill="#FFFFFF", width=4 * scale, joint="curve")
-    draw.line(points(((94, 61), (94, 91))), fill="#FFFFFF", width=5 * scale)
-    draw.line(points(((84, 82), (94, 92), (104, 82))),
-              fill="#FFFFFF", width=5 * scale, joint="curve")
+    # Blue-to-violet vertical gradient inside a rounded square.
+    gradient = Image.new("RGBA", (full, full))
+    shade = ImageDraw.Draw(gradient)
+    top, bottom = (79, 110, 247), (124, 77, 255)
+    for y in range(full):
+        t = y / full
+        shade.line([(0, y), (full, y)],
+                   fill=tuple(round(a + (b - a) * t) for a, b in zip(top, bottom)) + (255,))
+    mask = Image.new("L", (full, full), 0)
+    ImageDraw.Draw(mask).rounded_rectangle(box((8, 8, 120, 120)), radius=26 * scale, fill=255)
+    art = Image.new("RGBA", (full, full), (0, 0, 0, 0))
+    art.paste(gradient, (0, 0), mask)
+
+    draw = ImageDraw.Draw(art)
+    white = "#FFFFFF"
+    draw.rounded_rectangle(box((40, 30, 88, 76)), radius=7 * scale, outline=white, width=5 * scale)
+    draw.rounded_rectangle(box((26, 44, 76, 94)), radius=7 * scale,
+                           fill=(98, 92, 250, 255), outline=white, width=5 * scale)
+    draw.ellipse(box((36, 55, 45, 64)), fill=white)
+    draw.line(points(((33, 84), (45, 72), (53, 80), (61, 72), (70, 82))),
+              fill=white, width=5 * scale, joint="curve")
+    draw.line(points(((97, 58), (97, 94))), fill=white, width=6 * scale)
+    draw.line(points(((86, 84), (97, 95), (108, 84))),
+              fill=white, width=6 * scale, joint="curve")
+
+    # Toolbar sizes use the whole canvas so the glyph stays legible. Larger
+    # sizes follow the Web Store guidance: 96x96 artwork centered in 128x128.
+    if size <= 32:
+        return art.crop(box((8, 8, 120, 120))).resize((size, size), Image.Resampling.LANCZOS)
+    inner = round(full * 96 / 112)
+    image = Image.new("RGBA", (full, full), (0, 0, 0, 0))
+    offset = (full - inner) // 2
+    resized = art.resize((inner, inner), Image.Resampling.LANCZOS)
+    image.paste(resized, (offset, offset), resized)
     return image.resize((size, size), Image.Resampling.LANCZOS)
 
 

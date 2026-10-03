@@ -12,9 +12,11 @@
 
 ## 商店文案草稿
 
-**名称**：图片批量下载助手
+名称和简短说明来自 `_locales/`：默认语言为英文（`en`），简体中文浏览器显示 `zh_CN`。商店后台的详细说明和截图需要按语言分别填写：先填英文（默认语言），再添加简体中文。
 
-**简短说明**：读取当前 ChatGPT 图片组，在本机预览并保存所选图片；不上传开发者服务器。
+**名称**：图片批量下载助手 / Image Batch Download Helper
+
+**简短说明**：读取当前 ChatGPT 图片组，在本机预览并保存所选图片；不上传开发者服务器。 / Preview and batch save the current ChatGPT image group to a local folder. Nothing is uploaded to the developer.
 
 **详细说明**：
 
