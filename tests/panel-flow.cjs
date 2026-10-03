@@ -317,7 +317,13 @@ function fixture({
       return event;
     },
     dispatchKey(key) {
-      for (const listener of documentListeners.get("keydown") || []) listener({ key });
+      const event = {
+        key, defaultPrevented: false, stopped: false,
+        preventDefault() { this.defaultPrevented = true; },
+        stopImmediatePropagation() { this.stopped = true; }
+      };
+      for (const listener of documentListeners.get("keydown") || []) listener(event);
+      return event;
     },
     makeScanComplete() { scanComplete = true; },
     revealGallery() {
@@ -548,9 +554,11 @@ test("thumbnail preview navigates and changes selection without closing the pane
   page.ui("previewSelected").dispatch("change");
   assert.equal(page.ui("counts").textContent, "3 张已识别 · 2 张已选");
   assert.equal(page.ui("imageList").children[1].children[0].children[0].checked, false);
-  page.dispatchKey("ArrowLeft");
+  assert.equal(page.dispatchKey("ArrowLeft").stopped, true);
   assert.equal(page.ui("previewImage").src, "https://chatgpt.com/image/1.png");
-  page.dispatchKey("Escape");
+  assert.equal(page.dispatchKey("ArrowLeft").stopped, true, "edge key stays inside the preview");
+  assert.equal(page.dispatchKey("a").stopped, false, "unhandled keys pass through");
+  assert.equal(page.dispatchKey("Escape").stopped, true);
   assert.equal(page.ui("preview").hidden, true);
   assert.equal(page.ui("backdrop").hidden, false);
   assert.equal(page.ui("panel").inert, false);

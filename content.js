@@ -492,8 +492,10 @@
   }
 
   function batchPrefix() {
-    const timestamp = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Shanghai", hour12: false })
-      .replace(/[-:]/g, "").replace(" ", "-");
+    const now = new Date();
+    const pad = (value) => String(value).padStart(2, "0");
+    const timestamp = now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate()) + "-" +
+      pad(now.getHours()) + pad(now.getMinutes()) + pad(now.getSeconds());
     return "chatgpt-series-" + timestamp + "-" + crypto.randomUUID().slice(0, 8);
   }
 
@@ -810,30 +812,28 @@
     event.preventDefault();
     event.stopImmediatePropagation();
   }, { capture: true, passive: false });
+  // Capture phase so the page's own shortcuts (close viewer, switch image)
+  // do not also react while the panel is open.
   document.addEventListener("keydown", (event) => {
     if (ui("backdrop").hidden) return;
+    const previewOpen = !ui("preview").hidden;
     if (event.key === "Escape") {
-      event.preventDefault?.();
-      if (ui("preview").hidden) setOpen(false);
-      else closePreview();
-    } else if (!ui("preview").hidden && event.key === "ArrowLeft" && state.previewIndex > 0) {
-      event.preventDefault?.();
-      state.previewIndex -= 1;
-      updatePreview();
-    } else if (!ui("preview").hidden && event.key === "ArrowRight" &&
-        state.previewIndex < state.items.length - 1) {
-      event.preventDefault?.();
-      state.previewIndex += 1;
-      updatePreview();
-    }
-  });
-
-  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-    if (message?.type !== "TOGGLE_BATCH_IMAGE_PANEL") return false;
-    setOpen(ui("backdrop").hidden);
-    sendResponse({ ok: true });
-    return false;
-  });
+      if (previewOpen) closePreview();
+      else setOpen(false);
+    } else if (previewOpen && event.key === "ArrowLeft") {
+      if (state.previewIndex > 0) {
+        state.previewIndex -= 1;
+        updatePreview();
+      }
+    } else if (previewOpen && event.key === "ArrowRight") {
+      if (state.previewIndex < state.items.length - 1) {
+        state.previewIndex += 1;
+        updatePreview();
+      }
+    } else return;
+    event.preventDefault?.();
+    event.stopImmediatePropagation?.();
+  }, true);
 
   const observer = new MutationObserver(scheduleContext);
   observer.observe(document.documentElement, {
