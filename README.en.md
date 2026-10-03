@@ -33,7 +33,7 @@ Saved files: original images, numbered in order
 
 The Chrome Web Store version is coming soon. For now, install it manually:
 
-1. Download this repository (**Code → Download ZIP**) and unzip it.
+1. Open the [latest release](https://github.com/xin0907/gpt-image-batch-downloader/releases/latest), download `image-batch-download-x.y.z.zip`, and unzip it to a folder you will keep (don't delete or move it later).
 2. Open `chrome://extensions` in Chrome and turn on **Developer mode** (top right).
 3. Click **Load unpacked** and select the unzipped folder.
 4. Refresh the ChatGPT page.

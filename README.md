@@ -33,7 +33,7 @@
 
 Chrome 应用商店版本即将上架，目前可以手动安装：
 
-1. 下载本仓库（右上角 **Code → Download ZIP**），然后解压。
+1. 打开 [最新版本发布页](https://github.com/xin0907/gpt-image-batch-downloader/releases/latest)，下载 `image-batch-download-x.y.z.zip`，解压到一个固定的文件夹（之后不要删除或移动它）。
 2. 在 Chrome 地址栏打开 `chrome://extensions`，打开右上角的 **开发者模式**。
 3. 点击 **加载已解压的扩展程序**，选择解压后的文件夹。
 4. 刷新 ChatGPT 页面。
