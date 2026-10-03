@@ -142,6 +142,17 @@ h3 { margin: 0; font-size: 14px; }
   font-size: 12px;
 }
 .scan-issue span { flex: 1; }
+.scan-issue:has(.partial-confirm:not([hidden])) #scanIssueText { flex: 1 1 100%; }
+.scan-issue .partial-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.scan-issue:has(.partial-confirm:not([hidden])) .partial-confirm { margin-left: auto; }
+.scan-issue .partial-confirm span { flex: none; }
+.scan-issue .partial-confirm input { margin: 0; accent-color: var(--bgi-accent); }
 .scan-issue button {
   flex: 0 0 auto;
   border: 0;

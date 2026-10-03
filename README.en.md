@@ -52,7 +52,7 @@ Click the extension icon in the Chrome toolbar to switch the language or open th
 ## Notes
 
 - The extension saves the original image files provided by the page, without compression or conversion. It does not guarantee the files are identical to ChatGPT's own single-image download.
-- The extension reads only images the page has already loaded; the panel shows how many it found. If an original image can't be found, it asks you to retry.
+- If it cannot confirm the page has shown every image, it asks you to check the list. If an original image can't be found, it asks you to retry.
 - ChatGPT redesigns may temporarily break the button or image detection. Please report problems by email.
 
 ## Privacy
