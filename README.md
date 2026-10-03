@@ -17,7 +17,7 @@
 
 ## 安装
 
-Chrome 应用商店版本审核中，上架前可以手动安装：
+Chrome 应用商店版本即将上架，目前可以手动安装：
 
 1. 下载本仓库（右上角 **Code → Download ZIP**），然后解压。
 2. 在 Chrome 地址栏打开 `chrome://extensions`，打开右上角的 **开发者模式**。

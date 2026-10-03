@@ -17,7 +17,7 @@ A Chrome extension that lets you select and download a whole group of ChatGPT im
 
 ## Install
 
-The Chrome Web Store version is under review. Until it is published, install it manually:
+The Chrome Web Store version is coming soon. For now, install it manually:
 
 1. Download this repository (**Code → Download ZIP**) and unzip it.
 2. Open `chrome://extensions` in Chrome and turn on **Developer mode** (top right).
