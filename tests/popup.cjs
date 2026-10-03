@@ -5,9 +5,7 @@ const vm = require("node:vm");
 
 function fixture({ saved = "zh", storageFails = false } = {}) {
   const nodes = new Map();
-  for (const id of ["name", "languageLabel", "emailLabel", "supportLabel", "codeOptions", "zh", "en",
-    "alipay", "wechat", "alipayCode", "wechatCode", "alipayImage", "wechatImage",
-    "alipayLink", "wechatLink", "enlargeHint", "status"]) {
+  for (const id of ["name", "languageLabel", "githubLink", "zh", "en", "status"]) {
     nodes.set(id, {
       textContent: "",
       hidden: false,
@@ -41,46 +39,31 @@ async function settled() {
   await new Promise((resolve) => setImmediate(resolve));
 }
 
-test("toolbar popup bundles both original donation codes without a selector button", () => {
+test("toolbar popup links to GitHub and bundles no donation codes or email", () => {
   const manifest = JSON.parse(readFileSync("manifest.json", "utf8"));
   const html = readFileSync("popup.html", "utf8");
   assert.equal(manifest.action.default_popup, "popup.html");
   assert.deepEqual(manifest.permissions, ["storage"]);
-  assert.doesNotMatch(html, /id="open"|id="openText"/);
-  assert.match(html, /<details id="support">/);
-  assert.match(html, /id="emailLink" href="mailto:xinyiu777@gmail\.com"/);
-  for (const method of ["alipay", "wechat"]) {
-    assert.match(html, new RegExp(`src="assets/${method}\\.jpg"`));
-    const bytes = readFileSync(`assets/${method}.jpg`);
-    assert.ok(bytes.length > 50_000);
-    assert.deepEqual([...bytes.subarray(0, 3)], [0xff, 0xd8, 0xff]);
-  }
+  assert.match(html, /id="githubLink"[^>]*href="https:\/\/github\.com\/xin0907\/gpt-image-batch-downloader"/);
+  assert.doesNotMatch(html, /mailto:|assets\/|id="support"/);
+  assert.doesNotMatch(readFileSync("scripts/package.py", "utf8"), /assets\//);
   assert.match(readFileSync("popup.css", "utf8"), /prefers-color-scheme: dark/);
 });
 
-test("language preference and both donation methods work without a ChatGPT tab", async () => {
+test("language preference switches popup text without a ChatGPT tab", async () => {
   const popup = fixture({ saved: "en" });
   await settled();
   assert.equal(popup.document.documentElement.lang, "en");
-  assert.equal(popup.ui("supportLabel").textContent, "Support");
-  assert.equal(popup.ui("emailLabel").textContent, "Email");
-  assert.equal(popup.ui("alipayCode").hidden, false);
-  assert.equal(popup.ui("wechatCode").hidden, true);
-
-  popup.ui("wechat").click();
-  assert.equal(popup.ui("wechatCode").hidden, false);
-  assert.equal(popup.ui("alipayCode").hidden, true);
-  assert.equal(popup.ui("wechat").getAttribute("aria-pressed"), "true");
-  assert.equal(popup.ui("wechatImage").alt, "WeChat support QR code");
+  assert.equal(popup.ui("languageLabel").textContent, "Language");
+  assert.equal(popup.ui("githubLink").getAttribute("aria-label"), "View source on GitHub");
+  assert.equal(popup.ui("en").getAttribute("aria-pressed"), "true");
 
   await popup.ui("zh").click();
   assert.equal(popup.stored.language, "zh");
-  assert.equal(popup.ui("supportLabel").textContent, "赞赏码");
-  assert.equal(popup.ui("emailLabel").textContent, "邮箱");
-  assert.equal(popup.ui("wechatCode").hidden, false);
-  assert.equal(popup.ui("wechatLink").getAttribute("aria-label"), "查看微信赞赏码原图");
-  popup.ui("alipay").click();
-  assert.equal(popup.ui("alipayCode").hidden, false);
+  assert.equal(popup.document.documentElement.lang, "zh-CN");
+  assert.equal(popup.ui("languageLabel").textContent, "语言");
+  assert.equal(popup.ui("githubLink").getAttribute("aria-label"), "在 GitHub 查看源代码");
+  assert.equal(popup.ui("zh").getAttribute("aria-pressed"), "true");
 });
 
 test("popup reports a language preference save failure", async () => {

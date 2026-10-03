@@ -18,13 +18,13 @@
 
 **详细说明**：
 
-> 数据使用：扩展读取当前 ChatGPT 图片组的图片地址及图片内容，用于预览和用户主动保存；语言偏好保存在浏览器本地。图片不会发送给开发者服务器，赞赏码也不读取付款信息。详细说明见隐私政策。
+> 数据使用：扩展读取当前 ChatGPT 图片组的图片地址及图片内容，用于预览和用户主动保存；语言偏好保存在浏览器本地。图片不会发送给开发者服务器。详细说明见隐私政策。
 >
 > 在 ChatGPT 的图片生成结果页或全屏图片查看器中，点击页面内的下载图标，查看当前图片组。图片默认全选；可以单独取消、全选、全不选，也可以点缩略图查看大图。点击“下载已选”后选择本地目录。扩展并行保存所选图片，显示逐张进度，支持失败重试，并避免覆盖同名文件。
 >
 > 扩展从网页提供的图片地址获取文件字节，不额外压缩图片。网页结构变化、图片链接失效或权限不足时，部分图片可能无法读取；扩展会提示你核对列表或重试。它不承诺与 ChatGPT 原生下载文件逐字节相同。
 >
-> 界面支持中文和 English。语言偏好保存在浏览器本地。赞赏完全自愿，不影响下载功能。
+> 界面支持中文和 English。语言偏好保存在浏览器本地。
 >
 > 本扩展是独立项目，与 OpenAI 没有隶属、赞助或官方认可关系。
 
@@ -50,6 +50,6 @@
 4. 自己先用“加载已解压的扩展程序”在真实 ChatGPT 页面测试生成结果页、全屏查看器、部分选择、目录选择、失败重试，再点击 **Submit for Review**。可以在审核通过后再手动发布。
 5. 以后更新代码或扩展资源时，先把 `manifest.json` 的版本号调高，重新运行打包脚本并上传新 ZIP。
 
-GitHub 开源时，只上传源码、文档、图标和两张你希望公开的赞赏码；不要上传 `release/`、`debug.log`、登录信息、真实对话截图或自己的下载图片。仓库首页可展示赞赏码和联系邮箱，并链接到隐私说明。`LICENSE` 中的署名当前为 `xin`，如需使用其他公开署名，应在发布前修改。
+GitHub 仓库包含源码、文档、图标、README 演示截图和赞赏码（赞赏码只在 README 展示，不打进扩展安装包）；不要上传 `release/`、`debug.log`、登录信息或含私人对话的截图。`LICENSE` 中的署名当前为 `xin`，如需使用其他公开署名，应在发布前修改。
 
 官方参考：[准备扩展](https://developer.chrome.com/docs/webstore/prepare)、[上传和提交](https://developer.chrome.com/docs/webstore/publish)、[商店图片尺寸](https://developer.chrome.com/docs/webstore/images)、[隐私表单](https://developer.chrome.com/docs/webstore/cws-dashboard-privacy)、[代码可读性](https://developer.chrome.com/docs/webstore/program-policies/code-readability)。

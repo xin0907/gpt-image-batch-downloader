@@ -15,6 +15,20 @@ A Chrome extension that lets you select and download a whole group of ChatGPT im
 - Retry failed images; existing files with the same name are never overwritten
 - Chinese / English interface; follows ChatGPT's light or dark theme
 
+## Screenshots
+
+Generated results: click the button below the images (circled in red) to open the selection panel
+
+![Generated results](docs/images/generation-page.webp)
+
+Full-screen image viewer: batch selection works here too
+
+![Full-screen image viewer](docs/images/fullscreen-viewer.webp)
+
+Saved files: original images, numbered in order
+
+![Saved files](docs/images/saved-files.png)
+
 ## Install
 
 The Chrome Web Store version is coming soon. For now, install it manually:
@@ -33,7 +47,7 @@ The Chrome Web Store version is coming soon. For now, install it manually:
 3. Check the images you want in the panel.
 4. Click **Download selected**, choose a folder, and wait for it to finish.
 
-Click the extension icon in the Chrome toolbar to switch the language.
+Click the extension icon in the Chrome toolbar to switch the language or open this project on GitHub.
 
 ## Notes
 

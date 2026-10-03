@@ -23,8 +23,6 @@ FILES = (
     "icons/icon-32.png",
     "icons/icon-48.png",
     "icons/icon-128.png",
-    "assets/alipay.jpg",
-    "assets/wechat.jpg",
     "LICENSE",
     "PRIVACY.md",
 )
