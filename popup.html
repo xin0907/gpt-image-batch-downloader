@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="popup.css">
+  <script src="popup.js" defer></script>
+</head>
+<body>
+  <main>
+    <div class="heading">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 3h11a2 2 0 0 1 2 2v3"/>
+        <rect x="2.5" y="6.5" width="13" height="13" rx="2"/>
+        <path d="m5.5 16 3-3 2 2 2-2"/>
+        <path d="M20 11v9m-3-3 3 3 3-3"/>
+      </svg>
+      <strong id="name">图片批量下载</strong>
+    </div>
+    <div class="setting">
+      <span id="languageLabel">语言</span>
+      <div class="language-options" role="group" aria-labelledby="languageLabel">
+        <button id="zh" type="button" lang="zh-CN" aria-pressed="true">中文</button>
+        <button id="en" type="button" lang="en" aria-pressed="false">English</button>
+      </div>
+    </div>
+    <div class="contact">
+      <span id="emailLabel">邮箱</span>
+      <a id="emailLink" href="mailto:xinyiu777@gmail.com">xinyiu777@gmail.com</a>
+    </div>
+    <details id="support">
+      <summary>
+        <span id="supportLabel">赞赏码</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </summary>
+      <div class="support-content">
+        <div id="codeOptions" class="code-options" role="group" aria-label="赞赏方式">
+          <button id="alipay" type="button" aria-pressed="true">支付宝</button>
+          <button id="wechat" type="button" aria-pressed="false">微信</button>
+        </div>
+        <div id="alipayCode" class="qr-card">
+          <a id="alipayLink" href="assets/alipay.jpg" target="_blank" rel="noopener" aria-label="查看支付宝赞赏码原图">
+            <img id="alipayImage" src="assets/alipay.jpg" alt="支付宝赞赏码">
+          </a>
+        </div>
+        <div id="wechatCode" class="qr-card" hidden>
+          <a id="wechatLink" href="assets/wechat.jpg" target="_blank" rel="noopener" aria-label="查看微信赞赏码原图">
+            <img id="wechatImage" src="assets/wechat.jpg" alt="微信赞赏码">
+          </a>
+        </div>
+        <p id="enlargeHint">点击图片查看原图</p>
+      </div>
+    </details>
+    <p id="status" role="status" hidden></p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>ChatGPT gallery fixture</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #050505; color: #eee; font-family: system-ui, sans-serif; }
+    .native-mark { position: fixed; top: 15px; left: 16px; font-size: 14px; color: #ddd; }
+    .gallery { position: fixed; top: 55px; display: flex; gap: 12px; }
+    .gallery.generation { left: max(12px, calc(50vw - 120px)); }
+    .gallery.viewer { left: 60px; gap: max(30px, calc(50vw - 500px)); }
+    .gallery.viewer .rail { order: -1; }
+    .hero { width: 400px; height: 680px; object-fit: cover; border-radius: 9px; }
+    .rail { width: 72px; height: 350px; overflow-y: auto; display: grid; align-content: start; gap: 9px; }
+    .rail button { width: 62px; height: 62px; padding: 3px; background: #252525; border: 1px solid #777; border-radius: 7px; cursor: pointer; }
+    .rail button img { width: 54px; height: 54px; object-fit: cover; border-radius: 4px; }
+    .footer { position: fixed; bottom: 10px; left: 30%; width: 40%; border-radius: 22px; padding: 10px; background: #202020; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="native-mark">ChatGPT 图片页面布局模拟</div>
+  <main id="gallery"></main>
+  <div class="footer">询问 ChatGPT</div>
+  <script>
+    const pngs = [
+      "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAFElEQVR4nGO8We7AgA0wYRUdtBIAPRABoNdeJ9gAAAAASUVORK5CYII=",
+      "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAFElEQVR4nGMMztvLgA0wYRUdtBIALiEBjhjIMgYAAAAASUVORK5CYII=",
+      "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAFElEQVR4nGNMWtbFgA0wYRUdtBIAPdsBotTXjQcAAAAASUVORK5CYII="
+    ].map((base64) => "data:image/png;base64," + base64);
+    const mode = new URL(location.href).searchParams.get("mode") === "viewer" ? "viewer" : "generation";
+    const gallery = document.getElementById("gallery");
+    gallery.className = "gallery " + mode;
+    const hero = document.createElement("img");
+    hero.className = "hero";
+    hero.src = pngs[2];
+    const rail = document.createElement("div");
+    rail.className = "rail";
+    if (new URL(location.href).searchParams.get("partial") === "1") rail.style.paddingBottom = "500px";
+    const count = Math.min(40, Math.max(3, Number(new URL(location.href).searchParams.get("count")) || 3));
+    Array.from({ length: count }, (_, index) => pngs[index % pngs.length]).forEach((src, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      const thumb = document.createElement("img");
+      thumb.src = src;
+      thumb.alt = "第 " + (index + 1) + " 张";
+      button.append(thumb);
+      button.addEventListener("click", () => { hero.src = src; });
+      rail.append(button);
+    });
+    gallery.append(hero, rail);
+    window.chrome = window.chrome || {};
+    chrome.runtime = {
+      getURL: (path) => new URL("../../" + path, location.href).href,
+      onMessage: { addListener() {} },
+      sendMessage: async () => ({ ok: false, error: "测试页不使用跨域获取" })
+    };
+    const savedFiles = new Map();
+    window.__savedFiles = savedFiles;
+    window.showDirectoryPicker = async () => ({
+      name: "测试目录",
+      requestPermission: async () => "granted",
+      async getFileHandle(name, options) {
+        if (!savedFiles.has(name)) {
+          if (!options?.create) throw Object.assign(new Error("missing"), { name: "NotFoundError" });
+          savedFiles.set(name, null);
+        }
+        return {
+          async createWritable() {
+            return {
+              async write(blob) { savedFiles.set(name, blob); },
+              async close() {},
+              async abort() {}
+            };
+          },
+          async getFile() { return savedFiles.get(name); }
+        };
+      },
+      async removeEntry(name) { savedFiles.delete(name); }
+    });
+  </script>
+  <script src="../../gallery.js"></script>
+  <script src="../../image-io.js"></script>
+  <script src="../../content.js"></script>
+  <script>
+    if (new URL(location.href).searchParams.get("auto") === "1") {
+      setTimeout(() => document.getElementById("bgi-trigger-root").shadowRoot.getElementById("trigger").click(), 250);
+    }
+  </script>
+</body>
+</html>
