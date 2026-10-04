@@ -65,7 +65,7 @@ Chrome 应用商店版本即将上架，目前可以手动安装：
 
 | 支付宝 | 微信 |
 | --- | --- |
-| <img src="assets/alipay.jpg" alt="支付宝赞赏码" width="220"> | <img src="assets/wechat.jpg" alt="微信赞赏码" width="220"> |
+| <img src="assets/alipay-qr.png" alt="支付宝赞赏码" width="220"> | <img src="assets/wechat-qr.png" alt="微信赞赏码" width="220"> |
 
 ## 联系与许可
 

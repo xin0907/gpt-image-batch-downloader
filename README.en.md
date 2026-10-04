@@ -65,7 +65,7 @@ If this tool helps you, you can optionally leave a tip. It does not unlock or ch
 
 | Alipay | WeChat |
 | --- | --- |
-| <img src="assets/alipay.jpg" alt="Alipay QR code" width="220"> | <img src="assets/wechat.jpg" alt="WeChat QR code" width="220"> |
+| <img src="assets/alipay-qr.png" alt="Alipay QR code" width="220"> | <img src="assets/wechat-qr.png" alt="WeChat QR code" width="220"> |
 
 ## Contact & License
 
