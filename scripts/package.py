@@ -23,6 +23,8 @@ FILES = (
     "icons/icon-32.png",
     "icons/icon-48.png",
     "icons/icon-128.png",
+    "assets/alipay-qr.png",
+    "assets/wechat-qr.png",
     "LICENSE",
     "PRIVACY.md",
     "_locales/en/messages.json",

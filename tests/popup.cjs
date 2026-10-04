@@ -5,7 +5,8 @@ const vm = require("node:vm");
 
 function fixture({ saved = "zh", storageFails = false, uiLanguage } = {}) {
   const nodes = new Map();
-  for (const id of ["name", "languageLabel", "githubLink", "zh", "en", "status"]) {
+  for (const id of ["name", "languageLabel", "githubLink", "zh", "en", "status",
+    "supportLabel", "codeOptions", "supportHint", "alipay", "wechat", "alipayImage", "wechatImage"]) {
     nodes.set(id, {
       textContent: "",
       hidden: false,
@@ -40,15 +41,39 @@ async function settled() {
   await new Promise((resolve) => setImmediate(resolve));
 }
 
-test("toolbar popup links to GitHub and bundles no donation codes or email", () => {
+test("toolbar popup links to GitHub and keeps optional support codes collapsed", () => {
   const manifest = JSON.parse(readFileSync("manifest.json", "utf8"));
   const html = readFileSync("popup.html", "utf8");
+  const packaged = readFileSync("scripts/package.py", "utf8");
   assert.equal(manifest.action.default_popup, "popup.html");
   assert.deepEqual(manifest.permissions, ["storage"]);
   assert.match(html, /id="githubLink"[^>]*href="https:\/\/github\.com\/xin0907\/gpt-image-batch-downloader"/);
-  assert.doesNotMatch(html, /mailto:|assets\/|id="support"/);
-  assert.doesNotMatch(readFileSync("scripts/package.py", "utf8"), /assets\//);
+  assert.doesNotMatch(html, /mailto:/);
+  assert.match(html, /<details id="support"(?![^>]*\bopen\b)[^>]*>/, "support section starts collapsed");
+  for (const method of ["alipay", "wechat"]) {
+    assert.match(html, new RegExp(`src="assets/${method}-qr\\.png"`));
+    assert.match(packaged, new RegExp(`assets/${method}-qr\\.png`));
+    const bytes = readFileSync(`assets/${method}-qr.png`);
+    assert.deepEqual([...bytes.subarray(1, 4)], [0x50, 0x4e, 0x47]);
+  }
   assert.match(readFileSync("popup.css", "utf8"), /prefers-color-scheme: dark/);
+});
+
+test("support codes switch between Alipay and WeChat and follow the language", async () => {
+  const popup = fixture({ saved: "zh" });
+  await settled();
+  assert.equal(popup.ui("supportLabel").textContent, "请作者喝杯咖啡");
+  assert.equal(popup.ui("alipayImage").hidden, false);
+  assert.equal(popup.ui("wechatImage").hidden, true);
+  popup.ui("wechat").click();
+  assert.equal(popup.ui("wechatImage").hidden, false);
+  assert.equal(popup.ui("alipayImage").hidden, true);
+  assert.equal(popup.ui("wechat").getAttribute("aria-pressed"), "true");
+  await popup.ui("en").click();
+  assert.equal(popup.ui("supportLabel").textContent, "Buy me a coffee");
+  assert.equal(popup.ui("wechat").textContent, "WeChat");
+  assert.equal(popup.ui("wechatImage").alt, "WeChat support QR code");
+  assert.equal(popup.ui("wechatImage").hidden, false, "language switch keeps the chosen code");
 });
 
 test("language preference switches popup text without a ChatGPT tab", async () => {
