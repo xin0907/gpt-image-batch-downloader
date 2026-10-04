@@ -53,7 +53,7 @@ Click the extension icon in the Chrome toolbar to switch the language or open th
 
 - The extension saves the original image files provided by the page, without compression or conversion. It does not guarantee the files are identical to ChatGPT's own single-image download.
 - If it cannot confirm the page has shown every image, it asks you to check the list. If an original image can't be found, it asks you to retry.
-- ChatGPT redesigns may temporarily break the button or image detection. Please report problems by email.
+- ChatGPT redesigns may temporarily break the button or image detection. Please report problems in [Issues](https://github.com/xin0907/gpt-image-batch-downloader/issues).
 
 ## Privacy
 
@@ -67,7 +67,6 @@ If this tool helps you, you can optionally leave a tip. It does not unlock or ch
 | --- | --- |
 | <img src="assets/alipay-qr.png" alt="Alipay QR code" width="220"> | <img src="assets/wechat-qr.png" alt="WeChat QR code" width="220"> |
 
-## Contact & License
+## License
 
-- Email: [xinyiu777@gmail.com](mailto:xinyiu777@gmail.com)
-- Source code is under the [MIT License](LICENSE). The QR code images in `assets/` are not covered by the MIT License; see [assets/README.md](assets/README.md).
+Source code is under the [MIT License](LICENSE). The QR code images in `assets/` are not covered by the MIT License; see [assets/README.md](assets/README.md).

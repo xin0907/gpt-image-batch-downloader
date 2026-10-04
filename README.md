@@ -53,7 +53,7 @@ Chrome 应用商店版本即将上架，目前可以手动安装：
 
 - 扩展直接保存网页提供的原始图片文件，不压缩、不转换；但不保证与 ChatGPT 自带的单张下载文件完全相同。
 - 如果扩展不确定网页是否已经显示全部图片，会提示你核对；如果某张图片拿不到原图，会提示重试。
-- ChatGPT 改版后，按钮位置或识别方式可能暂时失效。遇到问题欢迎发邮件反馈。
+- ChatGPT 改版后，按钮位置或识别方式可能暂时失效。遇到问题欢迎在 [Issues](https://github.com/xin0907/gpt-image-batch-downloader/issues) 反馈。
 
 ## 隐私
 
@@ -67,7 +67,6 @@ Chrome 应用商店版本即将上架，目前可以手动安装：
 | --- | --- |
 | <img src="assets/alipay-qr.png" alt="支付宝赞赏码" width="220"> | <img src="assets/wechat-qr.png" alt="微信赞赏码" width="220"> |
 
-## 联系与许可
+## 许可
 
-- 邮箱：[xinyiu777@gmail.com](mailto:xinyiu777@gmail.com)
-- 源代码使用 [MIT 许可证](LICENSE)。`assets/` 中的赞赏码图片不在 MIT 授权范围内，详见 [assets/README.md](assets/README.md)。
+源代码使用 [MIT 许可证](LICENSE)。`assets/` 中的赞赏码图片不在 MIT 授权范围内，详见 [assets/README.md](assets/README.md)。
