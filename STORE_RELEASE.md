@@ -56,12 +56,15 @@
 
 **测试说明 / Test instructions**（后台“测试说明”一栏，给审核员看）：
 
-> The button only appears when a ChatGPT reply contains MULTIPLE images (a single-image reply shows no button by design).
-> 1. Sign in at https://chatgpt.com and start a new chat.
-> 2. Send: Generate 4 separate images (not a grid or collage): a cat in spring, summer, autumn and winter, one image per season.
-> 3. When the images finish, a thumbnail strip appears to the right of the main image, and the batch-download button (stacked-images icon with a down arrow) appears in the action row under the image.
-> 4. Click it, keep or change the selection, click "Download selected" / "下载已选", choose a folder, and allow write access when Chrome asks.
-> 5. Optional: open any image in ChatGPT's full-screen viewer — the same button is in the top-right toolbar.
+> IMPORTANT: the button only appears when ONE ChatGPT reply contains MULTIPLE images. A reply with a single image shows no button, by design and as stated in the description.
+> Video walkthrough: https://drive.google.com/file/d/19V9WXhNc7Hb4kNvhX3XwrW6Z5GB49-8e/view?usp=sharing
+> 1. Install the extension, then open (or reload) https://chatgpt.com, sign in and start a new chat. A ChatGPT tab that was already open before installing must be reloaded.
+> 2. Send this prompt: Generate 4 separate images (not a grid or collage): a cat in spring, summer, autumn and winter, one image per season.
+> 3. Wait until all images finish generating. The reply shows one large image with a vertical strip of small thumbnails to its right.
+> 4. The batch-download button (a small stacked-images icon) appears in the row of icons directly under the large image, next to the copy and "..." icons. Hovering it shows "Download image group".
+> 5. Click it. A panel opens on the right listing all images, with all of them selected. Click "Download selected (4)", choose a folder, and click "Allow" when Chrome asks to let the site edit files. The images are saved to that folder.
+> 6. The same button also appears in ChatGPT's full-screen image viewer (click the large image to open it): in the top-right toolbar, just left of the zoom percentage (e.g. "57%").
+> If ChatGPT returns a single image or one combined grid image, the button will not appear; send the prompt again or ask for "4 separate images".
 
 ## Privacy practices 表单草稿
 
