@@ -18,21 +18,50 @@
 
 **简短说明**：读取当前 ChatGPT 图片组，在本机预览并保存所选图片；不上传开发者服务器。 / Preview and batch save the current ChatGPT image group to a local folder. Nothing is uploaded to the developer.
 
-**详细说明**：
+**详细说明**（只写当前审核版本已有的功能；上传新版本时再补充新功能，比如 0.8.4 的 Shift 连选）：
 
-> 数据使用：扩展读取当前 ChatGPT 图片组的图片地址及图片内容，用于预览和用户主动保存；语言偏好保存在浏览器本地。图片不会发送给开发者服务器。详细说明见隐私政策。
+> 当 ChatGPT 的一次回复生成了多张图片时，这个扩展可以帮你一次挑选并保存其中的原图，不用再一张张点开下载。
 >
-> 在 ChatGPT 的图片生成结果页或全屏图片查看器中，点击页面内的下载图标，查看当前图片组。图片默认全选；可以单独取消、全选、全不选，也可以点缩略图查看大图。点击“下载已选”后选择本地目录。扩展并行保存所选图片，显示逐张进度，支持失败重试，并避免覆盖同名文件。
+> 使用方法：
+> 1. 在 chatgpt.com 登录，让 ChatGPT 一次生成多张图片。生成完成后，主图右侧会出现一列缩略图。
+> 2. 主图下方的操作按钮行里会出现批量下载按钮（叠放的图片加向下箭头的图标）。在全屏图片查看器中，同样的按钮位于右上角工具栏、缩放按钮左侧。
+> 3. 点击按钮打开选择面板：图片默认全选，可以单独取消、全选或全不选，也可以点缩略图查看大图。
+> 4. 点击“下载已选”，选择本地文件夹。扩展会并行保存所选图片，显示每张的进度，失败的图片可以重试，不会覆盖同名文件。
 >
-> 扩展从网页提供的图片地址获取文件字节，不额外压缩图片。网页结构变化、图片链接失效或权限不足时，部分图片可能无法读取；扩展会提示你核对列表或重试。它不承诺与 ChatGPT 原生下载文件逐字节相同。
+> 注意：只有一张图片的回复不会显示按钮，单张图片请使用 ChatGPT 自带的下载。ChatGPT 改版后，按钮位置或识别方式可能暂时失效。
 >
-> 界面支持中文和 English。语言偏好保存在浏览器本地。工具栏面板里可以展开赞赏码，赞赏完全自愿，不影响任何功能。
+> 数据使用：扩展只读取当前图片组的图片地址和图片内容，用于预览和你主动发起的保存；图片直接写入你选择的文件夹，不会发送到开发者的服务器。语言偏好保存在浏览器本地。详见隐私政策。
+>
+> 界面支持中文和 English。工具栏面板里可以展开赞赏码，赞赏完全自愿，不影响任何功能。
 >
 > 本扩展是独立项目，与 OpenAI 没有隶属、赞助或官方认可关系。
 
-**English description** (if adding an English listing):
+**English description**:
 
-> Data use: The extension reads image URLs and image data in the current ChatGPT image group for local preview and user-initiated saving. It stores only the language preference locally and does not send images to a developer-operated server. Open the in-page selector from a generated image result or the fullscreen image viewer. All images are selected by default; preview, deselect, or select all, then choose a local folder when you click Download. The extension shows per-image progress, supports retry, and avoids overwriting existing filenames. It does not recompress the received image bytes. It is an independent project and is not affiliated with or endorsed by OpenAI.
+> When a single ChatGPT reply contains multiple images, this extension lets you pick and save the original files in one go instead of downloading them one by one.
+>
+> How to use:
+> 1. Sign in at chatgpt.com and ask ChatGPT to generate several images in one reply. When they finish, a strip of thumbnails appears to the right of the main image.
+> 2. A batch-download button (a stacked-images icon with a down arrow) appears in the action row under the image. In ChatGPT's full-screen image viewer, the same button is in the top-right toolbar, left of the zoom control.
+> 3. Click it to open the selection panel. All images are selected by default; deselect any, select all or none, or click a thumbnail for a large preview.
+> 4. Click "Download selected" and choose a local folder. Images are saved in parallel with per-image progress; failed images can be retried, and existing files are never overwritten.
+>
+> Note: replies with only one image don't show the button — use ChatGPT's own download for single images. ChatGPT redesigns may temporarily break the button or image detection.
+>
+> Data use: the extension reads only the image URLs and image data of the current image group, for preview and the saving you start. Images are written straight to the folder you choose and are never sent to a developer server. Only your language preference is stored, locally. See the privacy policy.
+>
+> Interface in English and Chinese. The toolbar popup has optional support (tip) QR codes; they don't affect any feature.
+>
+> This is an independent project, not affiliated with or endorsed by OpenAI.
+
+**测试说明 / Test instructions**（后台“测试说明”一栏，给审核员看）：
+
+> The button only appears when a ChatGPT reply contains MULTIPLE images (a single-image reply shows no button by design).
+> 1. Sign in at https://chatgpt.com and start a new chat.
+> 2. Send: Generate 4 separate images (not a grid or collage): a cat in spring, summer, autumn and winter, one image per season.
+> 3. When the images finish, a thumbnail strip appears to the right of the main image, and the batch-download button (stacked-images icon with a down arrow) appears in the action row under the image.
+> 4. Click it, keep or change the selection, click "Download selected" / "下载已选", choose a folder, and allow write access when Chrome asks.
+> 5. Optional: open any image in ChatGPT's full-screen viewer — the same button is in the top-right toolbar.
 
 ## Privacy practices 表单草稿
 
