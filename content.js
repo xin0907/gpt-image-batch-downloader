@@ -34,6 +34,7 @@
     scanIssue: null,
     saveNotice: null,
     thumbnailSources: new Set(),
+    selectionAnchor: null,
     epoch: 0
   };
 
@@ -208,6 +209,8 @@
   const ui = (id) => shadow.getElementById(id);
   const trigger = triggerShadow.getElementById("trigger");
   let contextTimer;
+  // Set by the pointer/key event that precedes a checkbox change; read once by that change.
+  let rangePending = false;
   let languageChosen = false;
   const pageKey = () => location.origin + location.pathname;
 
@@ -387,9 +390,17 @@
       check.checked = state.selected.has(item.id);
       check.disabled = state.scanning || state.busy;
       check.addEventListener("change", () => {
-        if (check.checked) state.selected.add(item.id);
-        else state.selected.delete(item.id);
-        updateControls();
+        // Shift+click applies this card's new state to every card since the anchor.
+        const anchor = rangePending ? state.items.findIndex((entry) => entry.id === state.selectionAnchor) : -1;
+        rangePending = false;
+        const [from, to] = anchor < 0 ? [index, index] : [Math.min(anchor, index), Math.max(anchor, index)];
+        for (const entry of state.items.slice(from, to + 1)) {
+          if (check.checked) state.selected.add(entry.id);
+          else state.selected.delete(entry.id);
+        }
+        state.selectionAnchor = item.id;
+        if (to > from) renderItems();
+        else updateControls();
       });
       const image = document.createElement("img");
       image.src = item.thumbnailSource || item.source;
@@ -461,6 +472,7 @@
     state.items = [];
     state.selected.clear();
     state.results.clear();
+    state.selectionAnchor = null;
     state.batchPrefix = "";
     setSaveStatus("");
     clearScanIssue();
@@ -790,6 +802,12 @@
     state.selected.clear();
     renderItems();
   });
+  ui("imageList").addEventListener("mousedown", (event) => {
+    rangePending = Boolean(event.shiftKey);
+  }, true);
+  ui("imageList").addEventListener("keydown", (event) => {
+    rangePending = Boolean(event.shiftKey) && event.key === " ";
+  }, true);
   ui("save").addEventListener("click", saveSelected);
   ui("previewClose").addEventListener("click", closePreview);
   ui("preview").addEventListener("click", (event) => {

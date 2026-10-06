@@ -651,3 +651,77 @@ test("panel follows the browser language when no language was saved", async () =
   await new Promise((resolve) => setImmediate(resolve));
   assert.equal(saved.trigger().getAttribute("aria-label"), "批量下载图片");
 });
+
+function shiftClick(ui, element, shiftKey = true) {
+  for (const listener of ui("imageList").listeners.get("mousedown") || []) listener({ shiftKey, target: element });
+  element.click();
+}
+
+const cardLabel = (ui, index) => ui("imageList").children[index].children[0];
+const isChecked = (ui, index) => cardLabel(ui, index).children[0].checked;
+
+test("shift+click selects a contiguous range downward from the last clicked card", async () => {
+  const { ui, trigger } = fixture();
+  trigger().click();
+  await eventually(() => ui("imageList").children.length === 3);
+  ui("selectNone").click();
+  shiftClick(ui, cardLabel(ui, 0), false);
+  shiftClick(ui, cardLabel(ui, 2));
+  assert.deepEqual([0, 1, 2].map((i) => isChecked(ui, i)), [true, true, true]);
+  assert.equal(ui("counts").textContent, "3 张已识别 · 3 张已选");
+  assert.equal(ui("save").textContent, "下载已选 3 张");
+});
+
+test("shift+click works upward and can clear a range", async () => {
+  const { ui, trigger } = fixture();
+  trigger().click();
+  await eventually(() => ui("imageList").children.length === 3);
+  shiftClick(ui, cardLabel(ui, 2), false);          // uncheck the last card, anchor = 2
+  shiftClick(ui, cardLabel(ui, 0));                 // uncheck 0..2
+  assert.deepEqual([0, 1, 2].map((i) => isChecked(ui, i)), [false, false, false]);
+  assert.equal(ui("counts").textContent, "3 张已识别 · 0 张已选");
+});
+
+test("shift+click on a blank card area also extends the range", async () => {
+  const { ui, trigger } = fixture();
+  trigger().click();
+  await eventually(() => ui("imageList").children.length === 3);
+  ui("selectNone").click();
+  shiftClick(ui, ui("imageList").children[0], false);
+  shiftClick(ui, ui("imageList").children[2]);
+  assert.deepEqual([0, 1, 2].map((i) => isChecked(ui, i)), [true, true, true]);
+});
+
+test("shift+click without an anchor toggles only that card", async () => {
+  const { ui, trigger } = fixture();
+  trigger().click();
+  await eventually(() => ui("imageList").children.length === 3);
+  shiftClick(ui, cardLabel(ui, 1));
+  assert.deepEqual([0, 1, 2].map((i) => isChecked(ui, i)), [true, false, true]);
+});
+
+test("rescanning clears the shift anchor and preview toggles do not set it", async () => {
+  const page = fixture();
+  const { ui } = page;
+  page.trigger().click();
+  await eventually(() => ui("imageList").children.length === 3);
+  shiftClick(ui, cardLabel(ui, 0), false);          // anchor = first card
+  ui("retry").click();
+  await eventually(() => ui("imageList").children.length === 3 && isChecked(ui, 0));
+  shiftClick(ui, cardLabel(ui, 2));                 // no anchor any more: single toggle
+  assert.deepEqual([0, 1, 2].map((i) => isChecked(ui, i)), [true, true, false]);
+
+  ui("imageList").children[0].children[1].click(); // preview card 1 and uncheck it there
+  ui("previewSelected").checked = false;
+  ui("previewSelected").dispatch("change");
+  ui("previewClose").click();
+  assert.deepEqual([0, 1, 2].map((i) => isChecked(ui, i)), [false, true, false]);
+  shiftClick(ui, cardLabel(ui, 0));                 // checks card 1; anchor is still card 3
+  assert.deepEqual([0, 1, 2].map((i) => isChecked(ui, i)), [true, true, true]);
+});
+
+test("panel font stack includes common CJK fonts and cards are not text-selectable", () => {
+  const css = readFileSync("panel.css", "utf8");
+  assert.match(css, /font-family:[^;]*"PingFang SC"[^;]*"Microsoft YaHei"/);
+  assert.match(css, /\.card-select \{[^}]*user-select: none/);
+});

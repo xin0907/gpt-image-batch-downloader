@@ -9,7 +9,7 @@ A Chrome extension that lets you select and download a whole group of ChatGPT im
 ## Features
 
 - Adds a batch download button to ChatGPT's **generated image results** and **full-screen image viewer**
-- Lists every image in the current group, all selected by default — uncheck any you don't want
+- Lists every image in the current group, all selected by default — uncheck any you don't want, or Shift-click to select a range
 - Click a thumbnail to open a large preview and browse back and forth
 - Choose a local folder and save the selected images in one go, with per-image progress
 - Retry failed images; existing files with the same name are never overwritten
@@ -44,7 +44,7 @@ The Chrome Web Store version is coming soon. For now, install it manually:
 2. Click the batch download button:
    - Generated results: in the action button row below the images
    - Full-screen viewer: in the top-right toolbar, left of the zoom button
-3. Check the images you want in the panel.
+3. Check the images you want in the panel. Hold **Shift** and click another image to select (or clear) the whole range in between.
 4. Click **Download selected**, choose a folder, and wait for it to finish.
 
 Click the extension icon in the Chrome toolbar to switch the language or open this project on GitHub.

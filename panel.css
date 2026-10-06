@@ -19,7 +19,8 @@
   --bgi-preview-shadow: 0 6px 30px #0002;
   color: var(--bgi-text);
   color-scheme: light;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei",
+    "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
 }
 :host([data-theme="dark"]) {
   --bgi-text: #ececec;
@@ -226,6 +227,7 @@ h3 { margin: 0; font-size: 14px; }
 .image-card:hover { border-color: var(--bgi-subtle); }
 .card-select {
   display: flex;
+  user-select: none;
   flex: 1 1 auto;
   align-items: center;
   gap: 8px;
