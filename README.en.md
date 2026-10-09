@@ -31,7 +31,9 @@ Saved files: original images, numbered in order
 
 ## Install
 
-The Chrome Web Store version is coming soon. For now, install it manually:
+**Recommended:** install from the [Chrome Web Store](https://chromewebstore.google.com/detail/image-batch-downloader-fo/jfdonpeohbabalbajghlalbgcliijjmo) — click "Add to Chrome" and it updates automatically.
+
+Or install it manually:
 
 1. Open the [latest release](https://github.com/xin0907/gpt-image-batch-downloader/releases/latest), download `image-batch-download-x.y.z.zip`, and unzip it to a folder you will keep (don't delete or move it later).
 2. Open `chrome://extensions` in Chrome and turn on **Developer mode** (top right).

@@ -31,7 +31,9 @@
 
 ## 安装
 
-Chrome 应用商店版本即将上架，目前可以手动安装：
+**推荐：** 从 [Chrome 应用商店](https://chromewebstore.google.com/detail/image-batch-downloader-fo/jfdonpeohbabalbajghlalbgcliijjmo?hl=zh-CN) 安装，点击「添加至 Chrome」即可，之后会自动更新。
+
+也可以手动安装：
 
 1. 打开 [最新版本发布页](https://github.com/xin0907/gpt-image-batch-downloader/releases/latest)，下载 `image-batch-download-x.y.z.zip`，解压到一个固定的文件夹（之后不要删除或移动它）。
 2. 在 Chrome 地址栏打开 `chrome://extensions`，打开右上角的 **开发者模式**。
